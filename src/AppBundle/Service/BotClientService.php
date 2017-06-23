@@ -4,7 +4,6 @@ namespace AppBundle\Service;
 
 use AppBundle\Service\BotClient\BotClientInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class BotClientService
 {
@@ -14,19 +13,11 @@ class BotClientService
     private $clients;
 
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-
-    /**
      * RequestValidationService constructor.
-     * @param RequestStack $requestStack
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct()
     {
         $this->clients = new ArrayCollection();
-        $this->requestStack = $requestStack;
     }
 
     /**
@@ -44,6 +35,15 @@ class BotClientService
         }
         
         return false;
+    }
+
+    public function getBotClient($alias)
+    {
+        if (!$this->clients->containsKey($alias)) {
+            throw new \LogicException('There is no such alis in BotClient List');
+        }
+
+        return $this->clients->get($alias);
     }
 
     /**
