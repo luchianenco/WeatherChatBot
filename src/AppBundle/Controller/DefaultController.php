@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\BotClientService;
+use Buzz\Message\Response;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,19 +29,19 @@ class DefaultController extends Controller
     /**
      * @Route("/client/facebook/webhook", name="facebook_webhook")
      * @param Request $request
-     * @return JsonResponse
+     * @param LoggerInterface $logger
+     * @return Response
      */
-    public function webhookAction(Request $request)
+    public function webhookAction(Request $request, LoggerInterface $logger)
     {
-        $data = [];
+        $data = 'Error, wrong validation token';
         $verifyToken = $this->getParameter('facebook_verify_token');
+        $logger->error('Error: '. json_encode($request->query->all()));
 
-        if ($request->query->get('hub_mode') == 'subscribe') {
-            if ($request->query->get('hub_verify_token') == $verifyToken) {
-                $data = $request->query->get('hub_challenge');
-            }
+        if ($request->query->get('hub_verify_token') == $verifyToken) {
+            $data = $request->query->get('hub_challenge');
         }
 
-        return new JsonResponse($data);
+        return new Response($data);
     }
 }
