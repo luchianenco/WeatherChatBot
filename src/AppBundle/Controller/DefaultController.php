@@ -29,16 +29,14 @@ class DefaultController extends Controller
     /**
      * @Route("/client/facebook/webhook", name="facebook_webhook")
      * @param Request $request
-     * @param LoggerInterface $logger
      * @return Response
      */
-    public function webhookAction(Request $request, LoggerInterface $logger)
+    public function webhookAction(Request $request)
     {
         $data = 'Error, wrong validation token';
         $verifyToken = $this->getParameter('facebook_verify_token');
-        $logger->error('Error: '. json_encode($request->query->all()));
 
-        if ($request->query->get('hub_verify_token') == $verifyToken) {
+        if ($request->query->get('hub_verify_token') === $verifyToken) {
             $data = $request->query->get('hub_challenge');
         }
 
