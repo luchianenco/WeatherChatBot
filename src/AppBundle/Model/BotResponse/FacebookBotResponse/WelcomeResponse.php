@@ -14,7 +14,7 @@ class WelcomeResponse implements FacebookResponseInterface
      */
     private function __construct($payload)
     {
-
+        $this->payload = $payload;
     }
 
     /**
