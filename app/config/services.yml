@@ -23,5 +23,12 @@ services:
     app.bot.client.facebook:
         class: AppBundle\Service\BotClient\FacebookBotClient
         public: false
+        arguments: ['@app.buzz.browser', '%facebook_access_token%']
         tags:
           - { name: bot.client, alias: facebook}
+
+####
+    app.buzz.browser:
+        class: Buzz\Browser
+        public: false
+        arguments: []
