@@ -20,7 +20,7 @@ class GetStartedButtonCommand extends ContainerAwareCommand
         $this
             ->setName('app:get-started-button:create')
             ->setDescription('Set Get Started Button')
-            ->addArgument('payload', InputArgument::REQUIRED, 'Payload on Button click')
+            ->addArgument('payload', InputArgument::OPTIONAL, 'Payload on Button click')
         ;
     }
 
@@ -40,7 +40,7 @@ class GetStartedButtonCommand extends ContainerAwareCommand
         $client = $this->getContainer()->get('app.bot.client.facebook');
         $response = $client->send($button);
 
-        if (isset($response['result']) && $response['result'] === 'success') {
+        if (isset($response->result) && $response->result === 'success') {
             $msg = 'Get Started Button created successfully';
         }
 
@@ -50,9 +50,9 @@ class GetStartedButtonCommand extends ContainerAwareCommand
     private function askForPayload(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
-        $question = new Question('Please enter the payload', 'GET_STARTED');
+        $question = new Question('Please enter the payload: ');
         $question->setValidator(function ($answer) {
-            if (!is_string($answer) && $answer != '') {
+            if (!$answer) {
                 throw new \RuntimeException('Payload cannot be empty');
             }
 
@@ -60,6 +60,8 @@ class GetStartedButtonCommand extends ContainerAwareCommand
         });
         $question->setMaxAttempts(2);
 
-        return $helper->ask($input, $output, $question);
+        $payload =  $helper->ask($input, $output, $question);
+
+        return $payload;
     }
 }
