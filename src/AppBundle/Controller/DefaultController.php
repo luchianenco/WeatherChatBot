@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\BotClientService;
-use Buzz\Message\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
