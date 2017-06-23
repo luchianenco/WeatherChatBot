@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class GetStartedButtonCommand extends ContainerAwareCommand
@@ -18,7 +17,7 @@ class GetStartedButtonCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:get-started-button:create')
+            ->setName('app:fb:get-started-button:create')
             ->setDescription('Set Get Started Button')
             ->addArgument('payload', InputArgument::OPTIONAL, 'Payload on Button click')
         ;
@@ -60,8 +59,6 @@ class GetStartedButtonCommand extends ContainerAwareCommand
         });
         $question->setMaxAttempts(2);
 
-        $payload =  $helper->ask($input, $output, $question);
-
-        return $payload;
+        return  $helper->ask($input, $output, $question);
     }
 }
