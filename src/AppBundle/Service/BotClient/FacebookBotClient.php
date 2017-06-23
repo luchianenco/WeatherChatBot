@@ -49,8 +49,9 @@ class FacebookBotClient implements BotClientInterface
      */
     public function send(FacebookResponseInterface $response)
     {
-        $response = $this->browser->post($this->url, $response->formatJsonResponse());
+        $headers = ['Content-Type: application/json'];
+        $result = $this->browser->post($this->url, $headers, $response->formatJsonResponse());
 
-        return json_decode($response);
+        return json_decode($result->getContent());
     }
 }
