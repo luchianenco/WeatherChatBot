@@ -1,15 +1,16 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Command\FacebookCommand;
 
-use AppBundle\Model\BotResponse\FacebookBotResponse\WelcomeResponse;
+use AppBundle\Model\BotResponse\FacebookBotResponse\GetStartedButtonCreateResponse;
+use Buzz\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class GetStartedButtonCommand extends ContainerAwareCommand
+class FacebookGetStartedButtonCreateCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -35,15 +36,9 @@ class GetStartedButtonCommand extends ContainerAwareCommand
             $payload = $this->askForPayload($input, $output);
         }
 
-        $button = WelcomeResponse::create($payload);
+        $button = GetStartedButtonCreateResponse::create($payload);
         $client = $this->getContainer()->get('app.bot.client.facebook');
-        $response = $client->send($button);
-
-        if (isset($response->result) && $response->result === 'success') {
-            $msg = 'Get Started Button created successfully';
-        }
-
-        $output->writeln($msg);
+        $client->send($button, RequestInterface::METHOD_POST);
     }
 
     private function askForPayload(InputInterface $input, OutputInterface $output)
