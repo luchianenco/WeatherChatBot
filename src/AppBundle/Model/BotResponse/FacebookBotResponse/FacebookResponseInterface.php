@@ -3,8 +3,9 @@
 
 namespace AppBundle\Model\BotResponse\FacebookBotResponse;
 
+use AppBundle\Model\BotResponse\BotResponseInterface;
 
-interface FacebookResponseInterface
+interface FacebookResponseInterface extends BotResponseInterface
 {
-    public function formatJsonResponse();
+
 }
