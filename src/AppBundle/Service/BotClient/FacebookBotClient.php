@@ -2,8 +2,11 @@
 
 namespace AppBundle\Service\BotClient;
 
+use AppBundle\Event\BotResponseEvent;
+use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\FacebookResponseInterface;
-use Buzz\Browser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Facebook Bot Client
@@ -11,47 +14,55 @@ use Buzz\Browser;
  */
 class FacebookBotClient implements BotClientInterface
 {
-    const FB_URL = 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token=PAGE_ACCESS_TOKEN';
-
     /**
-     * @var string
-     */
-    private $accessToken;
-
-    /**
-     * @var mixed
+     * @var BotResponseUrl
      */
     private $url;
 
     /**
-     * @var Browser
+     * @var RequestStack
      */
-    private $browser;
+    private $requestStack;
 
-    // TODO remove direct dependancy on Browser class
-    // TODO make abstract layer
-    public function __construct(Browser $browser, $accessToken)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * FacebookBotClient constructor.
+     * @param RequestStack $requestStack
+     * @param EventDispatcherInterface $dispatcher
+     * @param $accessToken
+     */
+    public function __construct(RequestStack $requestStack, EventDispatcherInterface $dispatcher, $accessToken)
     {
-        $this->browser = $browser;
-        $this->accessToken = $accessToken;
-        $this->url = str_replace('PAGE_ACCESS_TOKEN', $this->accessToken, self::FB_URL);
+        $this->requestStack = $requestStack;
+        $this->dispatcher = $dispatcher;
+        $this->url = BotResponseUrl::createWithAccessToken($accessToken);
     }
 
     public function run()
     {
+        //Get provider incoming data
+        $data = json_decode(
+            file_get_contents("php://input"),
+            true,
+            512,
+            JSON_BIGINT_AS_STRING
+        );
+
+
         return 'facebook';
     }
 
-
     /**
      * @param FacebookResponseInterface $response
-     * @return bool
+     * @param string $requestType
      */
-    public function send(FacebookResponseInterface $response)
+    public function send(FacebookResponseInterface $response, $requestType)
     {
-        $headers = ['Content-Type: application/json'];
-        $result = $this->browser->post($this->url, $headers, $response->formatJsonResponse());
-
-        return json_decode($result->getContent());
+        $event = new BotResponseEvent($response, $this->url->getUrl(), $requestType);
+        $this->dispatcher->dispatch($event::NAME, $event);
     }
 }

@@ -18,14 +18,29 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+### Listeners
+
+    app.listener.send.bot.response:
+        class: AppBundle\Listener\SendBotResponseListener
+        arguments: ['@app.buzz.browser']
+        tags:
+            - { name: kernel.event_listener, event: bot.response }
+
+    app.listener.bot.logger:
+        class: AppBundle\Listener\BotLoggerListener
+        arguments: ['@logger']
+        tags:
+            - { name: kernel.event_listener, event: bot.log.response, method: 'onBotResponse' }
+            - { name: kernel.event_listener, event: bot.log.request, method: 'onBotRequest' }
+
 ### Bot Clients
 
     app.bot.client.facebook:
         class: AppBundle\Service\BotClient\FacebookBotClient
         public: true
-        arguments: ['@app.buzz.browser', '%facebook_access_token%']
+        arguments: ['@request_stack', '@event_dispatcher','%facebook_access_token%']
         tags:
-          - { name: bot.client, alias: facebook}
+            - { name: bot.client, alias: facebook}
 
 ####
     app.buzz.browser:
