@@ -52,7 +52,7 @@ class FacebookBotClient implements BotClientInterface
     {
         $requests = $this->readRequest();
 
-        return 'facebook';
+        return $requests;
     }
 
     public function readRequest() : array
