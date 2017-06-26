@@ -1,7 +1,8 @@
 <?php
 
-
 namespace AppBundle\Service\BotClient;
+
+use AppBundle\Model\BotResponse\FacebookBotResponse\FacebookResponseInterface;
 
 /**
  * Interface for Bot Clients e.g. Facebook, Telegram, Viber, etc
@@ -14,4 +15,8 @@ interface BotClientInterface
      * @return mixed
      */
     public function run();
+
+    public function readRequest();
+
+    public function sendResponse(FacebookResponseInterface $response, $requestType);
 }

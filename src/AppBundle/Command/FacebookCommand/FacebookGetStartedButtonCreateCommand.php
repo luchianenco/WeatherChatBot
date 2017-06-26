@@ -38,7 +38,7 @@ class FacebookGetStartedButtonCreateCommand extends ContainerAwareCommand
 
         $button = GetStartedButtonCreateResponse::create($payload);
         $client = $this->getContainer()->get('app.bot.client.facebook');
-        $client->send($button, RequestInterface::METHOD_POST);
+        $client->sendRequest($button, RequestInterface::METHOD_POST);
     }
 
     private function askForPayload(InputInterface $input, OutputInterface $output)
