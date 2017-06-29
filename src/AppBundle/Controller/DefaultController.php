@@ -13,33 +13,26 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/client/{botClient}", name="bot_client")
+     * @Route("/client/{botClient}/webhook", name="bot_webhook")
+     * @param Request $request
      * @param BotClientService $service
      * @param $botClient
-     * @return JsonResponse
-     */
-    public function botAction(BotClientService $service, $botClient)
-    {
-        //Bot Client should be bot client service alias
-        $data = $service->run($botClient);
-
-        return new JsonResponse($data);
-    }
-
-    /**
-     * @Route("/client/facebook/webhook", name="facebook_webhook")
-     * @param Request $request
      * @return Response
      */
-    public function webhookAction(Request $request)
+    public function webhookAction(Request $request, BotClientService $service, $botClient)
     {
         $data = 'Error, wrong validation token';
         $verifyToken = $this->getParameter('facebook_verify_token');
 
         if ($request->query->get('hub_verify_token') === $verifyToken) {
             $data = $request->query->get('hub_challenge');
+
+            return new Response($data);
         }
 
-        return new Response($data);
+        //Bot Client should be bot client service alias
+        $data = $service->run($botClient);
+
+        return new JsonResponse($data);
     }
 }
