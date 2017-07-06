@@ -3,24 +3,39 @@
 
 namespace AppBundle\Factory;
 
-use AppBundle\Model\BotRequest\FacebookBotRequest\PostbackRequest;
-use AppBundle\Model\BotRequest\FacebookBotRequest\QuickReplyRequest;
-use AppBundle\Model\BotRequest\FacebookBotRequest\TextRequest;
+use AppBundle\Model\BotRequest\BotRequestInterface;
+use AppBundle\Model\BotRequest\BotRequestStrategyInterface;
 
-class FacebookBotRequestFactory
+class FacebookBotRequestFactory implements BotRequestFactoryInterface
 {
-    public static function createBotRequestFromMessage(array $message)
+    private $strategies;
+
+    /**
+     * @param BotRequestStrategyInterface $strategy
+     * @param int $order
+     */
+    public function addStrategy(BotRequestStrategyInterface $strategy, $order)
     {
-        if (isset($message['postback'])) {
-            $request = PostbackRequest::createFromMessage($message);
-        } elseif (isset($message['message']['quick_reply'])) {
-            $request = QuickReplyRequest::createFromMessage($message);
-        } elseif (isset($message['message'])) {
-            $request = TextRequest::createFromMessage($message);
-        } else {
-            throw new \LogicException('Invalid message for Request provided');
+        if (isset($this->strategies[$order])) {
+            throw new \InvalidArgumentException(sprintf('A strategy with order \'%s\' is set already', $order));
         }
 
-        return $request;
+        $this->strategies[$order] = $strategy;
+    }
+
+    /**
+     * @param array $message
+     * @return BotRequestInterface
+     */
+    public function createBotRequestFromMessage(array $message)
+    {
+        /** @var BotRequestStrategyInterface $strategy */
+        foreach($this->strategies as $strategy) {
+            if ($strategy->isValid($message)) {
+                return $strategy->getBotRequest($message);
+            }
+        }
+
+        throw new \LogicException('Invalid message for Request provided');
     }
 }

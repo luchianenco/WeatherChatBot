@@ -3,6 +3,7 @@
 namespace AppBundle;
 
 use AppBundle\DependencyInjection\Compiler\BotClientPass;
+use AppBundle\DependencyInjection\Compiler\BotRequestStrategyPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -15,5 +16,6 @@ class AppBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new BotClientPass());
+        $container->addCompilerPass(new BotRequestStrategyPass());
     }
 }

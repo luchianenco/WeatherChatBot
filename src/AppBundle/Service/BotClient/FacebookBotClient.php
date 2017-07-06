@@ -5,14 +5,11 @@ namespace AppBundle\Service\BotClient;
 use AppBundle\Event\BotLogRequestEvent;
 use AppBundle\Event\BotLogResponseEvent;
 use AppBundle\Event\BotResponseEvent;
+use AppBundle\Factory\BotRequestFactoryInterface;
 use AppBundle\Factory\FacebookBotRequestFactory;
-use AppBundle\Model\BotRequest\FacebookBotRequest\PostbackRequest;
-use AppBundle\Model\BotRequest\FacebookBotRequest\QuickReplyRequest;
-use AppBundle\Model\BotRequest\FacebookBotRequest\TextRequest;
 use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\FacebookResponseInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Facebook Bot Client
@@ -26,9 +23,9 @@ class FacebookBotClient implements BotClientInterface
     private $url;
 
     /**
-     * @var RequestStack
+     * @var FacebookBotRequestFactory
      */
-    private $requestStack;
+    private $factory;
 
     /**
      * @var EventDispatcherInterface
@@ -37,14 +34,13 @@ class FacebookBotClient implements BotClientInterface
 
     /**
      * FacebookBotClient constructor.
-     * @param RequestStack $requestStack
+     * @param BotRequestFactoryInterface $factory
      * @param EventDispatcherInterface $dispatcher
      * @param $accessToken
      */
-    public function __construct(RequestStack $requestStack, EventDispatcherInterface $dispatcher, $accessToken)
+    public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher, $accessToken)
     {
-        $this->requestStack = $requestStack;
-        $this->dispatcher = $dispatcher;
+        $this->factory = $factory;
         $this->url = BotResponseUrl::createWithAccessToken($accessToken);
     }
 
@@ -98,7 +94,7 @@ class FacebookBotClient implements BotClientInterface
             }
 
             try {
-                $request = FacebookBotRequestFactory::createBotRequestFromMessage($message);
+                $request = $this->factory->createBotRequestFromMessage($message);
                 $requests[] = $request;
                 $event = new BotLogRequestEvent($request);
                 $this->dispatcher->dispatch(BotLogRequestEvent::NAME, $event);

@@ -40,9 +40,34 @@ services:
     app.bot.client.facebook:
         class: AppBundle\Service\BotClient\FacebookBotClient
         public: true
-        arguments: ['@request_stack', '@event_dispatcher','%facebook_access_token%']
+        arguments:
+          $accessToken: '%facebook_access_token%'
         tags:
             - { name: bot.client, alias: facebook}
+
+
+### Bot Request Strategy
+
+    app.bot.request.strategy.postback:
+        class: AppBundle\Model\BotRequest\FacebookBotRequest\Strategy\FbPostBackStrategy
+        public: false
+        arguments: ['']
+        tags:
+            - { name: bot.request.strategy.facebook, order: 10}
+
+    app.bot.request.strategy.quick_reply:
+        class: AppBundle\Model\BotRequest\FacebookBotRequest\Strategy\FbQuickReplyStrategy
+        public: false
+        arguments: ['']
+        tags:
+            - { name: bot.request.strategy.facebook, order: 20}
+
+    app.bot.request.strategy.text:
+        class: AppBundle\Model\BotRequest\FacebookBotRequest\Strategy\FbTextStrategy
+        public: false
+        arguments: ['']
+        tags:
+           - { name: bot.request.strategy.facebook, order: 30}
 
 ####
     app.buzz.browser:
