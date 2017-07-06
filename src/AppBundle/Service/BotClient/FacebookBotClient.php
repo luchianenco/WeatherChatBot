@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\BotClient;
 
+use AppBundle\Event\BotLogMessage;
 use AppBundle\Event\BotLogRequestEvent;
 use AppBundle\Event\BotLogResponseEvent;
 use AppBundle\Event\BotResponseEvent;
@@ -99,7 +100,8 @@ class FacebookBotClient implements BotClientInterface
                 $event = new BotLogRequestEvent($request);
                 $this->dispatcher->dispatch(BotLogRequestEvent::NAME, $event);
             } catch (\LogicException $e) {
-                continue;
+                $event = new BotLogMessage($e->getMessage());
+                $this->dispatcher->dispatch($event::NAME, $event);
             }
         }
 
