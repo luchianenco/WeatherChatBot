@@ -48,13 +48,22 @@ class FacebookBotClient implements BotClientInterface
         $this->url = BotResponseUrl::createWithAccessToken($accessToken);
     }
 
+    /**
+     * @return array
+     */
     public function run()
     {
         $requests = $this->readRequest();
 
+        // TODO Processor of Incomming Requests
+
+        // Faked Data Returned
         return $requests;
     }
 
+    /**
+     * @return array
+     */
     public function readRequest() : array
     {
         //Get provider incoming data
