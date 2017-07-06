@@ -24,4 +24,4 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%_bot.log'
             level: info
-            channels: ['bot']
+            channels: [bot]
