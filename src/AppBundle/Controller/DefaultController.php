@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\BotLogMessage;
 use AppBundle\Service\BotClientService;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
@@ -21,7 +22,9 @@ class DefaultController extends Controller
      */
     public function webhookAction(Request $request, BotClientService $service, $botClient)
     {
-        $data = 'Error, wrong validation token';
+        $event = new BotLogMessage('Request income');
+        $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+
         $verifyToken = $this->getParameter('facebook_verify_token');
 
         if ($request->query->get('hub_verify_token') === $verifyToken) {

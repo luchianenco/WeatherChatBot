@@ -33,6 +33,7 @@ services:
             - { name: monolog.logger, channel: bot }
             - { name: kernel.event_listener, event: bot.log.response, method: 'onBotResponse' }
             - { name: kernel.event_listener, event: bot.log.request, method: 'onBotRequest' }
+            - { name: kernel.event_listener, event: bot.log.message, method: 'onBotMessage' }
 
 ### Bot Clients
 
