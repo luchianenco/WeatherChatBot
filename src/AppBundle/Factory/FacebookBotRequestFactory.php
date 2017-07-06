@@ -13,6 +13,7 @@ class FacebookBotRequestFactory implements BotRequestFactoryInterface
     /**
      * @param BotRequestStrategyInterface $strategy
      * @param int $order
+     * @return FacebookBotRequestFactory
      */
     public function addStrategy(BotRequestStrategyInterface $strategy, $order)
     {
@@ -21,6 +22,9 @@ class FacebookBotRequestFactory implements BotRequestFactoryInterface
         }
 
         $this->strategies[$order] = $strategy;
+        ksort($this->strategies);
+
+        return $this;
     }
 
     /**
