@@ -113,6 +113,6 @@ class FacebookBotClient implements BotClientInterface
 
         // Log Response Event
         $logEvent = new BotLogResponseEvent($response);
-        $this->dispatcher->dispatch(BotResponseEvent::NAME, $logEvent);
+        $this->dispatcher->dispatch($logEvent::NAME, $logEvent);
     }
 }

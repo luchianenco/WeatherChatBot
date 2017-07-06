@@ -28,6 +28,6 @@ class FacebookGetStartedButtonDeleteCommand extends ContainerAwareCommand
     {
         $deleteButton = GetStartedButtonDeleteResponse::create();
         $client = $this->getContainer()->get('app.bot.client.facebook');
-        $client->sendRequest($deleteButton, RequestInterface::METHOD_DELETE);
+        $client->sendResponse($deleteButton, RequestInterface::METHOD_DELETE);
     }
 }
