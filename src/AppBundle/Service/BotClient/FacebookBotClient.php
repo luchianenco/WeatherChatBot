@@ -55,7 +55,9 @@ class FacebookBotClient implements BotClientInterface
         // TODO Processor of Incomming Requests
 
         // Faked Data Returned
-        return $requests;
+        return [
+            'count' => count($requests)
+        ];
     }
 
     /**

@@ -36,6 +36,9 @@ class DefaultController extends Controller
         //Bot Client should be bot client service alias
         $data = $service->run($botClient);
 
+        $event = new BotLogMessage('Request finish' . json_encode($data));
+        $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+
         return new JsonResponse($data);
     }
 }
