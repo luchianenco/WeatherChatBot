@@ -42,6 +42,7 @@ class FacebookBotClient implements BotClientInterface
     public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher, $accessToken)
     {
         $this->factory = $factory;
+        $this->dispatcher = $dispatcher;
         $this->url = BotResponseUrl::createWithAccessToken($accessToken);
     }
 
