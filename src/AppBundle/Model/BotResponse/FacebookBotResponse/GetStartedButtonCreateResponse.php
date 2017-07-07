@@ -4,7 +4,9 @@
 namespace AppBundle\Model\BotResponse\FacebookBotResponse;
 
 
-class GetStartedButtonCreateResponse implements FacebookResponseInterface
+use AppBundle\Model\BotResponse\BotResponseInterface;
+
+class GetStartedButtonCreateResponse implements BotResponseInterface
 {
     /**
      * @var string

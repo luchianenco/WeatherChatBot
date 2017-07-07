@@ -4,7 +4,9 @@
 namespace AppBundle\Model\BotResponse\FacebookBotResponse;
 
 
-class GetStartedButtonDeleteResponse implements FacebookResponseInterface
+use AppBundle\Model\BotResponse\BotResponseInterface;
+
+class GetStartedButtonDeleteResponse implements BotResponseInterface
 {
 
     /**
