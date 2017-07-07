@@ -8,9 +8,12 @@ use AppBundle\Event\BotLogResponseEvent;
 use AppBundle\Event\BotResponseEvent;
 use AppBundle\Factory\BotRequestFactoryInterface;
 use AppBundle\Factory\FacebookBotRequestFactory;
+use AppBundle\Model\BotRequest\BotRequestInterface;
 use AppBundle\Model\BotResponse\BotResponseUrlInterface;
 use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\FacebookResponseInterface;
+use AppBundle\Processor\ProcessorMediator;
+use Buzz\Message\RequestInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -35,57 +38,55 @@ class FacebookBotClient implements BotClientInterface
     private $dispatcher;
 
     /**
+     * @var ProcessorMediator
+     */
+    private $mediator;
+
+    /**
      * FacebookBotClient constructor.
      * @param BotRequestFactoryInterface $factory
      * @param EventDispatcherInterface $dispatcher
+     * @param ProcessorMediator $mediator
      */
-    public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher)
+    public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher, ProcessorMediator $mediator)
     {
         $this->factory = $factory;
         $this->dispatcher = $dispatcher;
-
+        $this->mediator = $mediator;
     }
 
     /**
      * @param BotResponseUrlInterface $url
      * @return array
      */
-    public function run(BotResponseUrlInterface $url)
+    public function run(BotResponseUrlInterface $url) : array
     {
         $this->url = $url;
-        $requests = $this->readRequest();
+        $rawRequest = $this->readRawRequest();
+        $requests = $this->processRawRequestData($rawRequest);
 
-        // TODO Processor of Incomming Requests
+        $responses = $this->mediator->execute($requests);
+        $this->sendResponse($responses, RequestInterface::METHOD_POST);
 
-        // Faked Data Returned
-        return [
-            'count' => count($requests)
-        ];
+        return ['countRequests' => count($requests), 'countResponses' => count($responses)];
     }
 
     /**
-     * Read Incoming request
+     * Read Raw Incoming request
      * @return array
      */
-    public function readRequest() : array
+    private function readRawRequest()
     {
         //Get provider incoming data
-        $data = json_decode(
-            file_get_contents("php://input"),
-            true,
-            512,
-            JSON_BIGINT_AS_STRING
-        );
-
-        return $this->processRequestData($data);
+        return json_decode(file_get_contents("php://input"), true, 512,JSON_BIGINT_AS_STRING);
     }
 
     /**
      * TODO Create Abstract Reader Class and Implementation
      * @param $data
-     * @return array
+     * @return BotRequestInterface[]
      */
-    private function processRequestData($data) : array
+    private function processRawRequestData($data) : array
     {
         $requests = [];
 
@@ -115,17 +116,22 @@ class FacebookBotClient implements BotClientInterface
     }
 
     /**
-     * @param FacebookResponseInterface $response
+     * @param FacebookResponseInterface[] $responses
      * @param string $requestType
+     * @return BotClientInterface
      */
-    public function sendResponse(FacebookResponseInterface $response, $requestType)
+    public function sendResponse(array $responses, $requestType) : BotClientInterface
     {
-        // Dispatch Send Response Event
-        $event = new BotResponseEvent($response, $this->url->getUrl(), $requestType);
-        $this->dispatcher->dispatch($event::NAME, $event);
+        foreach ($responses as $response) {
+            // Dispatch Send Response Event
+            $event = new BotResponseEvent($response, $this->url->getUrl(), $requestType);
+            $this->dispatcher->dispatch($event::NAME, $event);
 
-        // Log Response Event
-        $logEvent = new BotLogResponseEvent($response);
-        $this->dispatcher->dispatch($logEvent::NAME, $logEvent);
+            // Log Response Event
+            $logEvent = new BotLogResponseEvent($response);
+            $this->dispatcher->dispatch($logEvent::NAME, $logEvent);
+
+        }
+        return $this;
     }
 }

@@ -19,16 +19,10 @@ interface BotClientInterface
     public function run(BotResponseUrlInterface $url);
 
     /**
-     * Read Incoming Request
-     * @return mixed
-     */
-    public function readRequest();
-
-    /**
      * Send Response
-     * @param FacebookResponseInterface $response
+     * @param FacebookResponseInterface[] $responses
      * @param $requestType
      * @return mixed
      */
-    public function sendResponse(FacebookResponseInterface $response, $requestType);
+    public function sendResponse(array $responses, $requestType);
 }
