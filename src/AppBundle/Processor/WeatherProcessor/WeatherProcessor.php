@@ -54,6 +54,10 @@ class WeatherProcessor implements ProcessorInterface
      */
     private function executeMatchStrategy(BotRequestInterface $request) : BotResponseInterface
     {
+        if (!count($this->requestTypes)) {
+            throw new \LogicException('There is no Processor Request Type Strategy defined');
+        }
+
         foreach ($this->requestTypes as $requestType) {
             if ($requestType->isTypeMatched($request)) {
                 return $requestType->execute($request);
