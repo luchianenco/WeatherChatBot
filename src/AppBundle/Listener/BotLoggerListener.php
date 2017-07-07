@@ -26,8 +26,7 @@ class BotLoggerListener
      */
     public function onBotMessage(BotLogMessage $event)
     {
-        $this->logger->info('########## Log Message Start #########');
-        $this->logger->info('[Log] : ' . $event->getMessage());
+        $this->logger->info('[Log Message] : ' . $event->getMessage());
     }
 
     /**
@@ -37,10 +36,9 @@ class BotLoggerListener
     {
         $request = $event->getRequest();
 
-        $this->logger->info('########## Bot Log Request Start #########');
-        $this->logger->info('[Log] : ' . get_class($request));
-        $this->logger->info('[Log] : ' . $request->getUserId());
-        $this->logger->info('[Log] : ' . $request->getPayload());
+        $this->logger->info('[Log Request] : ' . get_class($request));
+        $this->logger->info('[Log Request] : ' . $request->getUserId());
+        $this->logger->info('[Log Request] : ' . $request->getPayload());
     }
 
     /**
@@ -50,8 +48,7 @@ class BotLoggerListener
     {
         $response = $event->getResponse();
 
-        $this->logger->info('########## Bot Log Response Start #########');
-        $this->logger->info('[Log] : ' . get_class($response));
-        $this->logger->info('[Log] : ' . $response->toJson());
+        $this->logger->info('[Log Response] : ' . get_class($response));
+        $this->logger->info('[Log Response] : ' . $response->toJson());
     }
 }

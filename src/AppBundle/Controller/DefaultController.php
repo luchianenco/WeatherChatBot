@@ -43,11 +43,9 @@ class DefaultController extends Controller
         $responses = $botClient->run($responseUrl);
         $botClient->sendResponse($responses, RequestInterface::METHOD_POST);
 
-        $data = ['countResponses' => count($responses)];
-
-        $event = new BotLogMessage('Request finish' . json_encode($data));
+        $event = new BotLogMessage('Request finish ');
         $this->get('event_dispatcher')->dispatch($event::NAME, $event);
 
-        return new JsonResponse($data);
+        return new JsonResponse([]);
     }
 }
