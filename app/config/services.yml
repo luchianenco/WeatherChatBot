@@ -39,7 +39,9 @@ services:
 
     AppBundle\Service\BotClient\FacebookBotClient:
         public: true
-        arguments: ['', '@event_dispatcher','%facebook_access_token%']
+        arguments:
+          $dispatcher: '@event_dispatcher'
+          $accessToken: '%facebook_access_token%'
         tags:
             - { name: bot.client, alias: facebook}
 
