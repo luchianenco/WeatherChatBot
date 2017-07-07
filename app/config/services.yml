@@ -45,14 +45,18 @@ services:
 
 ### Processors
 
+    AppBundle\Processor\ProcessorMediator:
+        arguments: ['@AppBundle\Processor\WeatherProcessor\WeatherProcessor']
+
     AppBundle\Processor\WeatherProcessor\WeatherProcessor:
         tags:
             - { name: bot.processor, alias: weather }
 
 ### Weather ProcessorMediator Strategies
 
-    AppBundle\Processor\ProcessorMediator:
-        arguments: ['@AppBundle\Processor\WeatherProcessor\WeatherProcessor']
+    AppBundle\Processor\WeatherProcessor\RequestType:
+            resource: '../../src/AppBundle/Processor\WeatherProcessor\RequestType'
+            tags: ['bot.processor.weather.strategy']
 
 ### Bot Request Strategy
 
