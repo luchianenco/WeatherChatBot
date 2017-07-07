@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Event\BotLogMessage;
 use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Service\BotClientService;
+use Buzz\Message\RequestInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,9 +38,12 @@ class DefaultController extends Controller
         }
 
         //Bot Client should be bot client service alias
-        $responseUrl = new BotResponseUrl($this->getParameter('facebook_access_token'));
+        $responseUrl = BotResponseUrl::createMessageUrl($this->getParameter('facebook_access_token'));
         $botClient = $service->getBotClient($alias);
-        $data = $botClient->run($responseUrl);
+        $responses = $botClient->run($responseUrl);
+        $botClient->sendResponse($responses, RequestInterface::METHOD_POST);
+
+        $data = ['countResponses' => count($responses)];
 
         $event = new BotLogMessage('Request finish' . json_encode($data));
         $this->get('event_dispatcher')->dispatch($event::NAME, $event);

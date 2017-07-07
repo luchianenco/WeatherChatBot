@@ -61,14 +61,22 @@ class FacebookBotClient implements BotClientInterface
      */
     public function run(BotResponseUrlInterface $url) : array
     {
-        $this->url = $url;
+        $this->setUrl($url);
         $rawRequest = $this->readRawRequest();
         $requests = $this->processRawRequestData($rawRequest);
 
-        $responses = $this->mediator->execute($requests);
-        $this->sendResponse($responses, RequestInterface::METHOD_POST);
+        return $this->mediator->execute($requests);
+    }
 
-        return ['countRequests' => count($requests), 'countResponses' => count($responses)];
+    /**
+     * @param BotResponseUrlInterface $url
+     * @return $this
+     */
+    public function setUrl(BotResponseUrlInterface $url)
+    {
+        $this->url = $url;
+
+        return $this;
     }
 
     /**

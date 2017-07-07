@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command\FacebookCommand;
 
+use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\GetStartedButtonCreateResponse;
 use Buzz\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -36,9 +37,13 @@ class FacebookGetStartedButtonCreateCommand extends ContainerAwareCommand
             $payload = $this->askForPayload($input, $output);
         }
 
-        $button = GetStartedButtonCreateResponse::create($payload);
+        $buttons[] = GetStartedButtonCreateResponse::create($payload);
+        $responseUrl = BotResponseUrl::createProfileUrl($this->getContainer()->getParameter('facebook_access_token'));
         $client = $this->getContainer()->get('app.bot.client.facebook');
-        $client->sendResponse($button, RequestInterface::METHOD_POST);
+        $client
+            ->setUrl($responseUrl)
+            ->sendResponse($buttons, RequestInterface::METHOD_POST)
+        ;
     }
 
     /**

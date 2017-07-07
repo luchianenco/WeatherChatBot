@@ -21,7 +21,7 @@ class TextRequest implements BotRequestInterface
      * @param $userId
      * @param $payload
      */
-    public function __construct($userId, $payload)
+    private function __construct($userId, $payload)
     {
         $this->userId = (int) $userId;
         $this->payload = $payload;
