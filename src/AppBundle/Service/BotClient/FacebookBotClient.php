@@ -123,6 +123,10 @@ class FacebookBotClient implements BotClientInterface
     public function sendResponse(array $responses, $requestType) : BotClientInterface
     {
         foreach ($responses as $response) {
+
+            // Log Json Sent
+            $this->dispatcher->dispatch(BotLogMessage::NAME, new BotLogMessage($response->toJson()));
+
             // Dispatch Send Response Event
             $event = new BotResponseEvent($response, $this->url->getUrl(), $requestType);
             $this->dispatcher->dispatch($event::NAME, $event);
