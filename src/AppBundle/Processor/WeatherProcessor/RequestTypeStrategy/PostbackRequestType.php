@@ -29,6 +29,6 @@ class PostbackRequestType implements ProcessorRequestTypeInterface
      */
     public function execute(BotRequestInterface $request) : BotResponseInterface
     {
-        return ContentTextResponse::create('Hello');
+        return ContentTextResponse::create($request->getUserId(), 'Hello');
     }
 }

@@ -29,6 +29,6 @@ class DefaultRequestType implements ProcessorRequestTypeInterface
      */
     public function execute(BotRequestInterface $request) : BotResponseInterface
     {
-        return ContentTextResponse::create('Default Strategy');
+        return ContentTextResponse::create($request->getUserId(),'Default Strategy');
     }
 }
