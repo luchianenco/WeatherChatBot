@@ -3,8 +3,9 @@
 namespace AppBundle\Model\BotRequest\FacebookBotRequest;
 
 use AppBundle\Model\BotRequest\BotRequestInterface;
+use AppBundle\Model\BotRequest\PostbackRequestInterface;
 
-class PostbackRequest implements BotRequestInterface
+class PostbackRequest implements BotRequestInterface, PostbackRequestInterface
 {
     /**
      * Facebook Sender ID

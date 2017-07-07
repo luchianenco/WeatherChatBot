@@ -13,9 +13,9 @@ class FacebookBotRequestFactory implements BotRequestFactoryInterface
     /**
      * @param BotRequestStrategyInterface $strategy
      * @param int $order
-     * @return FacebookBotRequestFactory
+     * @return BotRequestFactoryInterface
      */
-    public function addStrategy(BotRequestStrategyInterface $strategy, $order)
+    public function addStrategy(BotRequestStrategyInterface $strategy, $order) : BotRequestFactoryInterface
     {
         if (isset($this->strategies[$order])) {
             throw new \InvalidArgumentException(sprintf('A strategy with order \'%s\' is set already', $order));
@@ -31,7 +31,7 @@ class FacebookBotRequestFactory implements BotRequestFactoryInterface
      * @param array $message
      * @return BotRequestInterface
      */
-    public function createBotRequestFromMessage(array $message)
+    public function createBotRequestFromMessage(array $message) : BotRequestInterface
     {
         if (!count($this->strategies)) {
             throw new \LogicException('There is no any Bot Request Strategy Defined');

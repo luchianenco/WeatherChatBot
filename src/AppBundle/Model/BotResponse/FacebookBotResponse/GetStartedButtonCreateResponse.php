@@ -6,6 +6,9 @@ namespace AppBundle\Model\BotResponse\FacebookBotResponse;
 
 class GetStartedButtonCreateResponse implements FacebookResponseInterface
 {
+    /**
+     * @var string
+     */
     private $payload;
 
     /**
@@ -27,9 +30,9 @@ class GetStartedButtonCreateResponse implements FacebookResponseInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPayload()
+    public function getPayload() : string
     {
         return $this->payload;
     }
@@ -37,7 +40,7 @@ class GetStartedButtonCreateResponse implements FacebookResponseInterface
     /**
      * @return string
      */
-    public function toJson()
+    public function toJson() : string
     {
         $response = new \stdClass();
         $response->get_started = new \stdClass();

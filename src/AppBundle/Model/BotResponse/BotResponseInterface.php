@@ -4,5 +4,5 @@ namespace AppBundle\Model\BotResponse;
 
 interface BotResponseInterface
 {
-    public function toJson();
+    public function toJson() : string;
 }

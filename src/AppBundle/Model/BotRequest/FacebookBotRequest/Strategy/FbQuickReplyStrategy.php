@@ -3,6 +3,7 @@
 
 namespace AppBundle\Model\BotRequest\FacebookBotRequest\Strategy;
 
+use AppBundle\Model\BotRequest\BotRequestInterface;
 use AppBundle\Model\BotRequest\BotRequestStrategyInterface;
 use AppBundle\Model\BotRequest\FacebookBotRequest\QuickReplyRequest;
 
@@ -14,7 +15,7 @@ class FbQuickReplyStrategy implements BotRequestStrategyInterface
      * @param array $message
      * @return mixed
      */
-    public function isValid(array $message)
+    public function isValid(array $message) : bool
     {
         return isset($message['message']['quick_reply']);
     }
@@ -23,7 +24,7 @@ class FbQuickReplyStrategy implements BotRequestStrategyInterface
      * @param array $message
      * @return mixed
      */
-    public function getBotRequest(array $message)
+    public function getBotRequest(array $message) : BotRequestInterface
     {
         return QuickReplyRequest::createFromMessage($message);
     }

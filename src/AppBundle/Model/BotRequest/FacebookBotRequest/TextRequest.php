@@ -27,6 +27,11 @@ class TextRequest implements BotRequestInterface
         $this->payload = $payload;
     }
 
+    /**
+     * Create Text from Message
+     * @param array $message
+     * @return TextRequest
+     */
     public static function createFromMessage(array $message) : TextRequest
     {
         if ($message['sender'] && isset($message['sender']['id'])

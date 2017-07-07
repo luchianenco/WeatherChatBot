@@ -32,7 +32,7 @@ class ContentTextResponse implements FacebookResponseInterface
     /**
      * @return string
      */
-    public function toJson()
+    public function toJson() : string
     {
         $response = new \stdClass();
         $response->message = new \stdClass();

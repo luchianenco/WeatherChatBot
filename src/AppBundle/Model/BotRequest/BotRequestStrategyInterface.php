@@ -10,10 +10,11 @@ interface BotRequestStrategyInterface
      * @param array $message
      * @return mixed
      */
-    public function isValid(array $message);
+    public function isValid(array $message) : bool;
 
     /**
+     * @param array $message
      * @return BotRequestInterface
      */
-    public function getBotRequest(array $message);
+    public function getBotRequest(array $message) : BotRequestInterface;
 }

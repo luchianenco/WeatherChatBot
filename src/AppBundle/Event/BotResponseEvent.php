@@ -40,7 +40,7 @@ class BotResponseEvent extends Event
     /**
      * @return BotResponseInterface
      */
-    public function getResponse(): BotResponseInterface
+    public function getResponse() : BotResponseInterface
     {
         return $this->response;
     }

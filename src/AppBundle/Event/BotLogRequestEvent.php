@@ -27,7 +27,7 @@ class BotLogRequestEvent extends Event
     /**
      * @return BotRequestInterface
      */
-    public function getRequest(): BotRequestInterface
+    public function getRequest() : BotRequestInterface
     {
         return $this->request;
     }
