@@ -27,7 +27,9 @@ class WeatherProcessor implements ProcessorInterface
             throw new \LogicException(sprintf('The Request Type \'%s\'is already defined in the collection', $key));
         }
 
-        $this->requestTypes[$key] = $type;
+        $order = $type->getOrder();
+        $this->requestTypes[$order] = $type;
+        ksort($this->requestTypes);
 
         return $this;
     }

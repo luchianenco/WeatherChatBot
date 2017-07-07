@@ -22,4 +22,10 @@ interface ProcessorRequestTypeInterface
      * @return BotResponseInterface
      */
     public function execute(BotRequestInterface $request) : BotResponseInterface;
+
+    /**
+     * Get Order Number
+     * @return int
+     */
+    public function getOrder() : int;
 }

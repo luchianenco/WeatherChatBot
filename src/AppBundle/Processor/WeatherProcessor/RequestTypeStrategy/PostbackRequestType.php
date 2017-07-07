@@ -11,6 +11,7 @@ use AppBundle\Processor\ProcessorRequestTypeInterface;
 
 class PostbackRequestType implements ProcessorRequestTypeInterface
 {
+    const ORDER = 100;
 
     /**
      * Check if Request Type machtes Provide BotRequest
@@ -29,6 +30,15 @@ class PostbackRequestType implements ProcessorRequestTypeInterface
      */
     public function execute(BotRequestInterface $request) : BotResponseInterface
     {
-        return ContentTextResponse::create($request->getUserId(), 'Hello');
+        return ContentTextResponse::create($request->getUserId(), 'Postback Strategy');
+    }
+
+    /**
+     * Get Order Number
+     * @return int
+     */
+    public function getOrder() : int
+    {
+        return self::ORDER;
     }
 }

@@ -12,6 +12,8 @@ use AppBundle\Processor\ProcessorRequestTypeInterface;
 class DefaultRequestType implements ProcessorRequestTypeInterface
 {
 
+    const ORDER = 90000;
+
     /**
      * Check if Request Type machtes Provide BotRequest
      * @param BotRequestInterface $request
@@ -30,5 +32,14 @@ class DefaultRequestType implements ProcessorRequestTypeInterface
     public function execute(BotRequestInterface $request) : BotResponseInterface
     {
         return ContentTextResponse::create($request->getUserId(),'Default Strategy');
+    }
+
+    /**
+     * Get Order Number
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return self::ORDER;
     }
 }
