@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\BotLogMessage;
+use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Service\BotClientService;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
@@ -14,16 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/client/{botClient}/webhook", name="bot_webhook")
+     * @Route("/client/{alias}/webhook", name="bot_webhook")
      * @param Request $request
      * @param BotClientService $service
-     * @param $botClient
+     * @param $alias
      * @return Response
      */
-    public function webhookAction(Request $request, BotClientService $service, $botClient)
+    public function webhookAction(Request $request, BotClientService $service, $alias)
     {
         $event = new BotLogMessage('Request income');
         $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+
 
         $verifyToken = $this->getParameter('facebook_verify_token');
 
@@ -34,7 +36,9 @@ class DefaultController extends Controller
         }
 
         //Bot Client should be bot client service alias
-        $data = $service->run($botClient);
+        $responseUrl = new BotResponseUrl($this->getParameter('facebook_access_token'));
+        $botClient = $service->getBotClient($alias);
+        $data = $botClient->run($responseUrl);
 
         $event = new BotLogMessage('Request finish' . json_encode($data));
         $this->get('event_dispatcher')->dispatch($event::NAME, $event);

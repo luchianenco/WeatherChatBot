@@ -3,8 +3,9 @@
 
 namespace AppBundle\Model\BotResponse\FacebookBotResponse;
 
+use AppBundle\Model\BotResponse\BotResponseUrlInterface;
 
-class BotResponseUrl
+class BotResponseUrl implements BotResponseUrlInterface
 {
     const FB_URL = 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token=PAGE_ACCESS_TOKEN';
 
@@ -15,26 +16,17 @@ class BotResponseUrl
 
     /**
      * BotResponseUrl constructor.
-     * @param $accessToken
+     * @param string $pageAccessToken
      */
-    private function __construct($accessToken)
+    public function __construct($pageAccessToken)
     {
-        $this->url = str_replace('PAGE_ACCESS_TOKEN', $accessToken, self::FB_URL);
-    }
-
-    /**
-     * @param $accessToken
-     * @return BotResponseUrl
-     */
-    public static function createWithAccessToken($accessToken)
-    {
-        return new self($accessToken);
+        $this->url = str_replace('PAGE_ACCESS_TOKEN', $pageAccessToken, self::FB_URL);
     }
 
     /**
      * @return mixed
      */
-    public function getUrl()
+    public function getUrl() : string
     {
         return $this->url;
     }

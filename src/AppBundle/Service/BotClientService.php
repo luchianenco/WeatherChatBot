@@ -22,21 +22,8 @@ class BotClientService
 
     /**
      * @param $alias
-     * @return bool
+     * @return BotClientInterface
      */
-    public function run($alias)
-    {
-        if (isset($this->clients[$alias])) {
-            /** @var BotClientInterface $client */
-            $client = $this->clients[$alias];
-            $data = $client->run();
-            
-            return $data;
-        }
-        
-        return false;
-    }
-
     public function getBotClient($alias)
     {
         if (!$this->clients->containsKey($alias)) {

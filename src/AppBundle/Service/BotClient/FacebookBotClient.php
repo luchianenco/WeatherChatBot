@@ -8,6 +8,7 @@ use AppBundle\Event\BotLogResponseEvent;
 use AppBundle\Event\BotResponseEvent;
 use AppBundle\Factory\BotRequestFactoryInterface;
 use AppBundle\Factory\FacebookBotRequestFactory;
+use AppBundle\Model\BotResponse\BotResponseUrlInterface;
 use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\FacebookResponseInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,20 +38,21 @@ class FacebookBotClient implements BotClientInterface
      * FacebookBotClient constructor.
      * @param BotRequestFactoryInterface $factory
      * @param EventDispatcherInterface $dispatcher
-     * @param $accessToken
      */
-    public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher, $accessToken)
+    public function __construct(BotRequestFactoryInterface $factory, EventDispatcherInterface $dispatcher)
     {
         $this->factory = $factory;
         $this->dispatcher = $dispatcher;
-        $this->url = BotResponseUrl::createWithAccessToken($accessToken);
+
     }
 
     /**
+     * @param BotResponseUrlInterface $url
      * @return array
      */
-    public function run()
+    public function run(BotResponseUrlInterface $url)
     {
+        $this->url = $url;
         $requests = $this->readRequest();
 
         // TODO Processor of Incomming Requests
@@ -62,6 +64,7 @@ class FacebookBotClient implements BotClientInterface
     }
 
     /**
+     * Read Incoming request
      * @return array
      */
     public function readRequest() : array
