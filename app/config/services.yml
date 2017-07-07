@@ -37,12 +37,9 @@ services:
 
 ### Bot Clients
 
-    app.bot.client.facebook:
-        class: AppBundle\Service\BotClient\FacebookBotClient
+    AppBundle\Service\BotClient\FacebookBotClient:
         public: true
         arguments:
-          $factory: '@AppBundle\Factory\FacebookBotRequestFactory'
-          $dispatcher: '@event_dispatcher'
           $accessToken: '%facebook_access_token%'
         tags:
             - { name: bot.client, alias: facebook}
