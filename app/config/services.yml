@@ -54,8 +54,8 @@ services:
 
 ### Weather ProcessorMediator Strategies
 
-    AppBundle\Processor\WeatherProcessor\RequestType:
-            resource: '../../src/AppBundle/Processor\WeatherProcessor\RequestType'
+    AppBundle\Processor\WeatherProcessor\RequestTypeStrategy\:
+            resource: '../../src/AppBundle/Processor/WeatherProcessor/RequestTypeStrategy'
             tags: ['bot.processor.weather.strategy']
 
 ### Bot Request Strategy

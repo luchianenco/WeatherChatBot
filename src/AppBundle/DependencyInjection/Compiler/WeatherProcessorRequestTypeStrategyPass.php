@@ -21,12 +21,12 @@ class WeatherProcessorRequestTypeStrategyPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->findDefinition(FacebookBotRequestFactory::class);
+        $definition = $container->findDefinition(WeatherProcessor::class);
         $taggedServices = $container->findTaggedServiceIds(self::TAG_ID);
 
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
-                $definition->addMethodCall('addStrategy', [new Reference($id)]);
+                $definition->addMethodCall('addRequestType', [new Reference($id)]);
             }
         }
     }
