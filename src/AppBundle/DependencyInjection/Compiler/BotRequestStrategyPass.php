@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class BotRequestStrategyPass implements CompilerPassInterface
 {
+    const TAG_ID = 'bot.request.strategy.facebook';
+
     /**
      * @param ContainerBuilder $container
      */
@@ -19,7 +21,7 @@ class BotRequestStrategyPass implements CompilerPassInterface
         }
 
         $definition = $container->findDefinition(FacebookBotRequestFactory::class);
-        $taggedServices = $container->findTaggedServiceIds('bot.request.strategy');
+        $taggedServices = $container->findTaggedServiceIds(self::TAG_ID);
 
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
