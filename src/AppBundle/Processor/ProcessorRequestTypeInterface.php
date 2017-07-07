@@ -5,6 +5,7 @@ namespace AppBundle\Processor;
 
 
 use AppBundle\Model\BotRequest\BotRequestInterface;
+use AppBundle\Model\BotResponse\BotResponseInterface;
 
 interface ProcessorRequestTypeInterface
 {
@@ -18,7 +19,7 @@ interface ProcessorRequestTypeInterface
     /**
      * Execute Processing on Provided Request
      * @param BotRequestInterface $request
-     * @return mixed
+     * @return BotResponseInterface
      */
-    public function execute(BotRequestInterface $request);
+    public function execute(BotRequestInterface $request) : BotResponseInterface;
 }
