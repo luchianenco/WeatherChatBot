@@ -41,8 +41,18 @@ services:
         class: AppBundle\Service\BotClient\FacebookBotClient
         public: true
         tags:
-            - { name: bot.client, alias: facebook}
+            - { name: bot.client, alias: facebook }
 
+### Processors
+
+    AppBundle\Processor\WeatherProcessor\WeatherProcessor:
+        tags:
+            - { name: bot.processor, alias: weather }
+
+### Weather ProcessorMediator Strategies
+
+    AppBundle\Processor\ProcessorMediator:
+        arguments: ['@AppBundle\Processor\WeatherProcessor\WeatherProcessor']
 
 ### Bot Request Strategy
 

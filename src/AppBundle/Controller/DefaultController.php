@@ -29,6 +29,7 @@ class DefaultController extends Controller
 
         $verifyToken = $this->getParameter('facebook_verify_token');
 
+        // Check for webhook init
         if ($request->query->get('hub_verify_token') === $verifyToken) {
             $data = $request->query->get('hub_challenge');
 
