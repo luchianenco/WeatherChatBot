@@ -100,7 +100,7 @@ class FacebookBotClient implements BotClientInterface
                 $request = $this->factory->createBotRequestFromMessage($message);
                 $requests[] = $request;
                 $event = new BotLogRequestEvent($request);
-                $this->dispatcher->dispatch(BotLogRequestEvent::NAME, $event);
+                $this->dispatcher->dispatch($event::NAME, $event);
             } catch (\LogicException $e) {
                 $event = new BotLogMessage($e->getMessage());
                 $this->dispatcher->dispatch($event::NAME, $event);
