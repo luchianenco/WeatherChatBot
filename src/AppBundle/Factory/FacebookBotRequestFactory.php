@@ -8,7 +8,7 @@ use AppBundle\Model\BotRequest\BotRequestStrategyInterface;
 
 class FacebookBotRequestFactory implements BotRequestFactoryInterface
 {
-    private $strategies;
+    private $strategies = [];
 
     /**
      * @param BotRequestStrategyInterface $strategy
@@ -33,6 +33,10 @@ class FacebookBotRequestFactory implements BotRequestFactoryInterface
      */
     public function createBotRequestFromMessage(array $message)
     {
+        if (!count($this->strategies)) {
+            throw new \LogicException('There is no any Bot Request Strategy Defined');
+        }
+
         /** @var BotRequestStrategyInterface $strategy */
         foreach($this->strategies as $strategy) {
             if ($strategy->isValid($message)) {
