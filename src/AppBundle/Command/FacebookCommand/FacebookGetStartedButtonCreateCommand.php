@@ -30,7 +30,6 @@ class FacebookGetStartedButtonCreateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $msg = 'Get Started Button does not created';
         $payload = $input->getArgument('payload');
 
         if (!$payload) {
