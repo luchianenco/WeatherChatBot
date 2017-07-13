@@ -13,7 +13,7 @@ use AppBundle\Processor\WeatherProcessor\PostbackState\PostbackStateInterface;
 
 class MessageRequestType implements ProcessorRequestTypeInterface
 {
-    const ORDER = 100;
+    const ORDER = 300;
 
     private $states = [];
 
