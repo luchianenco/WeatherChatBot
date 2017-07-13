@@ -16,6 +16,22 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
+     * @Route("/", name="homepage")
+     */
+    public function homepageAction()
+    {
+        return $this->render('@App/default/homepage.html.twig');
+    }
+
+    /**
+     * @Route("/privacy", name="privacy")
+     */
+    public function privacyAction()
+    {
+        return $this->render('@App/default/privacy.html.twig');
+    }
+
+    /**
      * @Route("/client/{alias}/webhook", name="bot_webhook")
      * @param Request $request
      * @param BotClientService $service
