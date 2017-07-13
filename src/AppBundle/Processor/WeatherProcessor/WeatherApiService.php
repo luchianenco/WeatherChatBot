@@ -48,10 +48,10 @@ class WeatherApiService
 
         $response = $this->browser->get($url)->getContent();
 
-        $event = new BotLogMessage(gettype($response));
+        $event = new BotLogMessage($url);
         $this->dispatcher->dispatch($event::NAME, $event);
 
-        $event = new BotLogMessage(json_encode($response));
+        $event = new BotLogMessage($response);
         $this->dispatcher->dispatch($event::NAME, $event);
 
         return json_decode($response);
