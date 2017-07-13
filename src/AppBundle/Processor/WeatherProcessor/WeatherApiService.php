@@ -3,7 +3,9 @@
 
 namespace AppBundle\Processor\WeatherProcessor;
 
+use AppBundle\Event\BotLogMessage;
 use Buzz\Browser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WeatherApiService
 {
@@ -18,13 +20,20 @@ class WeatherApiService
     private $browser;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * WeatherApiService constructor.
      * @param Browser $browser
+     * @param EventDispatcherInterface $dispatcher
      * @param $appId
      */
-    public function __construct(Browser $browser, $appId)
+    public function __construct(Browser $browser, EventDispatcherInterface $dispatcher, $appId)
     {
         $this->browser = $browser;
+        $this->dispatcher = $dispatcher;
         $this->appId = $appId;
     }
 
@@ -38,6 +47,12 @@ class WeatherApiService
         $url .= 'q=' . $name;
 
         $response = $this->browser->get($url);
+
+        $event = new BotLogMessage(gettype($response));
+        $this->dispatcher->dispatch($event::NAME, $event);
+
+        $event = new BotLogMessage(json_encode($response));
+        $this->dispatcher->dispatch($event::NAME, $event);
 
         return json_decode($response);
     }
