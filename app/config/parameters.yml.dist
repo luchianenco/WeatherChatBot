@@ -20,3 +20,5 @@ parameters:
 
     facebook_access_token: ~
     facebook_verify_token: ~
+
+    weather_api_app_id: ~

@@ -55,21 +55,26 @@ services:
 ### Weather ProcessorMediator Strategies
 
     AppBundle\Processor\WeatherProcessor\RequestTypeStrategy\:
-            resource: '../../src/AppBundle/Processor/WeatherProcessor/RequestTypeStrategy'
-            tags: ['bot.processor.weather.strategy']
+        resource: '../../src/AppBundle/Processor/WeatherProcessor/RequestTypeStrategy'
+        tags: ['bot.processor.weather.strategy']
 
 ### Weather Postback State Strategies
 
     AppBundle\Processor\WeatherProcessor\PostbackState\:
-            resource: '../../src/AppBundle/Processor/WeatherProcessor/PostbackState'
-            tags: ['bot.state.postback.weather.strategy']
+        resource: '../../src/AppBundle/Processor/WeatherProcessor/PostbackState'
+        tags: ['bot.state.postback.weather.strategy']
 
 ### Weather Parameters State Strategies
 
     AppBundle\Processor\WeatherProcessor\ParameterState\:
-            resource: '../../src/AppBundle/Processor/WeatherProcessor/ParameterState'
-            tags: ['bot.state.parameter.weather.strategy']
+        resource: '../../src/AppBundle/Processor/WeatherProcessor/ParameterState'
+        tags: ['bot.state.parameter.weather.strategy']
 
+### Weather Api Service
+
+    AppBundle\Processor\WeatherProcessor\WeatherApiService:
+        arguments:
+          $appId: '%weather_api_app_id%'
 
 ### Bot Request Strategy
 
@@ -91,7 +96,8 @@ services:
         tags:
            - { name: bot.request.strategy.facebook, order: 30}
 
-####
+#### Misc
+
     app.buzz.browser:
         class: Buzz\Browser
         public: false

@@ -5,11 +5,22 @@ namespace AppBundle\Processor\WeatherProcessor\ParameterState;
 
 use AppBundle\Model\BotRequest\BotRequestInterface;
 use AppBundle\Model\BotResponse\FacebookBotResponse\ContentTextResponse;
+use AppBundle\Processor\WeatherProcessor\WeatherApiService;
 
 class ParameterStateLocation implements ParameterStateInterface
 {
     const ORDER = 900000;
-    const TEXT = 'Today in %s is %s';
+    const TEXT = 'Today at %s in %s was %s';
+
+    /**
+     * @var WeatherApiService
+     */
+    private $service;
+
+    public function __construct(WeatherApiService $service)
+    {
+        $this->service = $service;
+    }
 
     /**
      * @param BotRequestInterface $request
@@ -26,8 +37,22 @@ class ParameterStateLocation implements ParameterStateInterface
      */
     public function createResponse(BotRequestInterface $request)
     {
+        // TODO refactor
+
         $location = $request->getPayload();
-        $result = sprintf(self::TEXT, $location, '20°C and sunny');
+        $response = $this->service->getByCityName($location);
+
+        $date = new \DateTime();
+        $date->setTimestamp($response->dt);
+
+        $temp = $response->main->temp;
+        $weatherDesc = $response->weather[0]->main;
+
+        $time = $date->format('H:i');
+        $city = $response->name;
+        $desc = $temp . ' and ' .$weatherDesc;
+
+        $result = sprintf(self::TEXT, $time, $city, $desc);
 
         return ContentTextResponse::create($request->getUserId(), $result);
     }
