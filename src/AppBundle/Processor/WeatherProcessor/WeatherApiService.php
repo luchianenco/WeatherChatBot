@@ -46,7 +46,7 @@ class WeatherApiService
         $url = str_replace('__APP__ID__', $this->appId, self::URL);
         $url .= 'q=' . $name;
 
-        $response = $this->browser->get($url);
+        $response = $this->browser->get($url)->getContent();
 
         $event = new BotLogMessage(gettype($response));
         $this->dispatcher->dispatch($event::NAME, $event);
