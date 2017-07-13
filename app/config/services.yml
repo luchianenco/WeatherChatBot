@@ -64,6 +64,12 @@ services:
             resource: '../../src/AppBundle/Processor/WeatherProcessor/PostbackState'
             tags: ['bot.state.postback.weather.strategy']
 
+### Weather Parameters State Strategies
+
+    AppBundle\Processor\WeatherProcessor\ParameterState\:
+            resource: '../../src/AppBundle/Processor/WeatherProcessor/ParameterState'
+            tags: ['bot.state.parameter.weather.strategy']
+
 
 ### Bot Request Strategy
 
