@@ -4,7 +4,7 @@
 namespace AppBundle\Processor\WeatherProcessor\RequestTypeStrategy;
 
 use AppBundle\Model\BotRequest\BotRequestInterface;
-use AppBundle\Model\BotRequest\PostbackRequestInterface;
+use AppBundle\Model\BotRequest\MessageRequestInterface;
 use AppBundle\Model\BotResponse\BotResponseInterface;
 use AppBundle\Model\BotResponse\FacebookBotResponse\ContentTextResponse;
 use AppBundle\Processor\ProcessorRequestTypeInterface;
@@ -18,7 +18,7 @@ class MessageRequestType implements ProcessorRequestTypeInterface
     private $states = [];
 
     /**
-     * @param $state
+     * @param ParameterStateInterface $state
      */
     public function addState(ParameterStateInterface $state)
     {
@@ -34,7 +34,7 @@ class MessageRequestType implements ProcessorRequestTypeInterface
      */
     public function isTypeMatched(BotRequestInterface $request) : bool
     {
-        return $request instanceof PostbackRequestInterface;
+        return $request instanceof MessageRequestInterface;
     }
 
     /**

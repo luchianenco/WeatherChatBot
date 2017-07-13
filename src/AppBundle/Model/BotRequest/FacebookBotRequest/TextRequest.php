@@ -3,8 +3,9 @@
 namespace AppBundle\Model\BotRequest\FacebookBotRequest;
 
 use AppBundle\Model\BotRequest\BotRequestInterface;
+use AppBundle\Model\BotRequest\MessageRequestInterface;
 
-class TextRequest implements BotRequestInterface
+class TextRequest implements BotRequestInterface, MessageRequestInterface
 {
     /**
      * Facebook Sender ID
