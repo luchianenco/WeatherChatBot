@@ -45,7 +45,7 @@ class ParameterStateLocation implements ParameterStateInterface
         $date = new \DateTime();
         $date->setTimestamp($response->dt);
 
-        $temp = $response->main->temp;
+        $temp = round($response->main->temp) . '°C';
         $weatherDesc = $response->weather[0]->main;
 
         $time = $date->format('H:i');
