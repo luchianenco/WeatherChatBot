@@ -9,7 +9,7 @@ use AppBundle\Model\BotResponse\FacebookBotResponse\ContentTextResponse;
 class ParameterStateLocation implements ParameterStateInterface
 {
     const ORDER = 900000;
-    const TEXT = 'The weather for %s is %s';
+    const TEXT = 'Today in %s is %s';
 
     /**
      * @param BotRequestInterface $request
@@ -26,7 +26,8 @@ class ParameterStateLocation implements ParameterStateInterface
      */
     public function createResponse(BotRequestInterface $request)
     {
-        $result = sprintf(self::TEXT, 'Berlin', '20°C and sunny');
+        $location = $request->getPayload();
+        $result = sprintf(self::TEXT, $location, '20°C and sunny');
 
         return ContentTextResponse::create($request->getUserId(), $result);
     }
