@@ -43,7 +43,7 @@ class WeatherApiService
      */
     public function getByCityName($name)
     {
-        $url = str_replace('__APP__ID__', $this->appId, self::URL);
+        $url = str_replace('__APP_ID__', $this->appId, self::URL);
         $url .= 'q=' . $name;
 
         $response = $this->browser->get($url)->getContent();
