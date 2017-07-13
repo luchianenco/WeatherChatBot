@@ -16,7 +16,10 @@ class PostbackRequestType implements ProcessorRequestTypeInterface
 
     private $states = [];
 
-    public function addState($state)
+    /**
+     * @param PostbackStateInterface $state
+     */
+    public function addState(PostbackStateInterface $state)
     {
         $order = $state->getOrder();
         $this->states[$order] = $state;
