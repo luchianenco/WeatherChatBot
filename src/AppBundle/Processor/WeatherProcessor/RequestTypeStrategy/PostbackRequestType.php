@@ -20,6 +20,7 @@ class PostbackRequestType implements ProcessorRequestTypeInterface
     {
         $order = $state->getOrder();
         $this->states[$order] = $state;
+        ksort($this->states);
     }
 
     /**
