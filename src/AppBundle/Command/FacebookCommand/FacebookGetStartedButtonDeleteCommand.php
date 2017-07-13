@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command\FacebookCommand;
 
+use AppBundle\Model\BotResponse\FacebookBotResponse\BotResponseUrl;
 use AppBundle\Model\BotResponse\FacebookBotResponse\GetStartedButtonDeleteResponse;
 use Buzz\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -27,7 +28,10 @@ class FacebookGetStartedButtonDeleteCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $deleteButtons[] = GetStartedButtonDeleteResponse::create();
+        $responseUrl = BotResponseUrl::createProfileUrl($this->getContainer()->getParameter('facebook_access_token'));
         $client = $this->getContainer()->get('app.bot.client.facebook');
-        $client->sendResponse($deleteButtons, RequestInterface::METHOD_DELETE);
+        $client
+            ->setUrl($responseUrl)
+            ->sendResponse($deleteButtons, RequestInterface::METHOD_DELETE);
     }
 }
