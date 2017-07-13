@@ -58,6 +58,13 @@ services:
             resource: '../../src/AppBundle/Processor/WeatherProcessor/RequestTypeStrategy'
             tags: ['bot.processor.weather.strategy']
 
+### Weather Postback State Strategies
+
+    AppBundle\Processor\WeatherProcessor\PostbackState\:
+            resource: '../../src/AppBundle/Processor/WeatherProcessor/PostbackState'
+            tags: ['bot.state.postback.weather.strategy']
+
+
 ### Bot Request Strategy
 
     app.bot.request.strategy.postback:

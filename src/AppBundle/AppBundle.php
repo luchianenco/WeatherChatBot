@@ -4,6 +4,7 @@ namespace AppBundle;
 
 use AppBundle\DependencyInjection\Compiler\BotClientPass;
 use AppBundle\DependencyInjection\Compiler\BotRequestStrategyPass;
+use AppBundle\DependencyInjection\Compiler\WeatherPostbackStatePass;
 use AppBundle\DependencyInjection\Compiler\WeatherProcessorRequestTypeStrategyPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -19,5 +20,6 @@ class AppBundle extends Bundle
         $container->addCompilerPass(new BotClientPass());
         $container->addCompilerPass(new BotRequestStrategyPass());
         $container->addCompilerPass(new WeatherProcessorRequestTypeStrategyPass());
+        $container->addCompilerPass(new WeatherPostbackStatePass());
     }
 }

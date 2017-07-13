@@ -8,10 +8,19 @@ use AppBundle\Model\BotRequest\PostbackRequestInterface;
 use AppBundle\Model\BotResponse\BotResponseInterface;
 use AppBundle\Model\BotResponse\FacebookBotResponse\ContentTextResponse;
 use AppBundle\Processor\ProcessorRequestTypeInterface;
+use AppBundle\Processor\WeatherProcessor\PostbackState\PostbackStateInterface;
 
 class PostbackRequestType implements ProcessorRequestTypeInterface
 {
     const ORDER = 100;
+
+    private $states = [];
+
+    public function addState($state)
+    {
+        $order = $state->getOrder();
+        $this->states[$order] = $state;
+    }
 
     /**
      * Check if Request Type machtes Provide BotRequest
@@ -30,7 +39,21 @@ class PostbackRequestType implements ProcessorRequestTypeInterface
      */
     public function execute(BotRequestInterface $request) : BotResponseInterface
     {
-        return ContentTextResponse::create($request->getUserId(), 'Postback Strategy');
+        return $this->selectStrategy($request);
+    }
+
+    /**
+     * @param BotRequestInterface $request
+     * @return ContentTextResponse
+     */
+    private function selectStrategy(BotRequestInterface $request)
+    {
+        /** @var PostbackStateInterface $state */
+        foreach ($this->states as $state) {
+            if ($state->isEqualPayload($request)) {
+                return $state->createResponse($request);
+            }
+        }
     }
 
     /**
